@@ -1,5 +1,5 @@
 
-`git clone https://github.com/yvann-hub/Robby-chatbot.git`
+`git clone https://github.com/PocketBrain/Med_bot.git`
 
 
 `cd Med_bot`
