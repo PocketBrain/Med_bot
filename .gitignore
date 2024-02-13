@@ -112,7 +112,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-
+model-q8_0.gguf
 .venv
 env/
 venv/

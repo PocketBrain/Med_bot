@@ -8,7 +8,6 @@ from langchain.prompts.prompt import PromptTemplate
 langchain.verbose = False
 
 class Chatbot:
-
     def __init__(self, model_name, temperature, vectors):
         self.model_name = model_name
         self.temperature = temperature
