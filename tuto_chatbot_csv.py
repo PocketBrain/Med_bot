@@ -6,7 +6,7 @@ from langchain_community.embeddings import LlamaCppEmbeddings
 from langchain.llms import LlamaCpp
 from langchain.chains import ConversationalRetrievalChain
 from langchain.document_loaders.csv_loader import CSVLoader
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import Chroma
 import tempfile
 
 n_gpu_layers =-1  # The number of layers to put on the GPU. The rest will be on the CPU. If you don't know how many layers there are, you can use -1 to move all to GPU.

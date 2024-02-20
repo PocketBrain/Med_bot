@@ -3,6 +3,7 @@ import streamlit as st
 from langchain.callbacks import get_openai_callback
 from langchain.chains import ConversationalRetrievalChain
 from langchain.llms import LlamaCpp
+from llama_cpp import Llama
 from langchain.prompts.prompt import PromptTemplate
 
 langchain.verbose = False
@@ -35,7 +36,8 @@ class Chatbot:
             model_path="model-q8_0.gguf",
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
-            temperature=1,
+            n_threads=16,
+            temperature=0.5,
             top_p=1,
             verbose=True,
             n_ctx=4096
