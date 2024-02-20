@@ -17,9 +17,6 @@ class Embedder:
         self.createEmbeddingsDir()
 
     def createEmbeddingsDir(self):
-        """
-        Creates a directory to store the embeddings vectors
-        """
         if not os.path.exists(self.PATH):
             os.mkdir(self.PATH)
 
@@ -64,8 +61,8 @@ class Embedder:
             loader = TextLoader(file_path=tmp_file_path, encoding="utf-8")
             data = loader.load_and_split(text_splitter)
             
-        #embeddings = LlamaCppEmbeddings(model_path="model-q8_0.gguf")
-        embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-l6-v2")
+        embeddings = LlamaCppEmbeddings(model_path="model-q8_0.gguf")
+        #embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-l6-v2")
 
         vectors = FAISS.from_documents(data, embeddings)
         os.remove(tmp_file_path)

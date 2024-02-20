@@ -13,9 +13,7 @@ class PandasAgent :
 
     @staticmethod
     def count_tokens_agent(agent, query):
-        """
-        Count the tokens used by the CSV Agent
-        """
+
         with get_openai_callback() as cb:
             result = agent(query)
             st.write(f'Spent a total of {cb.total_tokens} tokens')

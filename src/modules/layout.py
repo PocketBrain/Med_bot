@@ -3,9 +3,6 @@ import streamlit as st
 class Layout:
     
     def show_header(self, types_files):
-        """
-        Displays the header of the app
-        """
         st.markdown(
             f"""
             <h1 style='text-align: center;'> Спроси робота о данных из {types_files} файла ! </h1>
@@ -15,13 +12,11 @@ class Layout:
 
 
     def prompt_form(self):
-        """
-        Displays the prompt form
-        """
+
         with st.form(key="my_form", clear_on_submit=True):
             user_input = st.text_area(
                 "Query:",
-                placeholder="Ask me anything about the document...",
+                placeholder="Спроси меня о чем хочешь...",
                 key="input",
                 label_visibility="collapsed",
             )

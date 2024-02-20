@@ -14,23 +14,21 @@ class Chatbot:
         self.vectors = vectors
 
     qa_template = """
-        You are a helpful AI assistant named Robby. The user gives you a file its content is represented by the following pieces of context, use them to answer the question at the end.
-        If you don't know the answer, just say you don't know. Do NOT try to make up an answer.
-        If the question is not related to the context, politely respond that you are tuned to only answer questions that are related to the context.
-        Use as much detail as possible when responding.
+        Вы - Мединский робот, полезный ассистент. Пользователь предоставляет вам файл, содержимое которого представлено следующими фрагментами контекста, используйте их, чтобы ответить на вопрос в конце.
+ Если вы не знаете ответа, просто скажите, что не знаете. НЕ пытайтесь придумать ответ.
+ Если вопрос не связан с контекстом, вежливо ответьте, что знаете, исходя из собственных знаний.
+ При ответе используйте как можно больше деталей.
 
-        context: {context}
+        Контекст: {context}
         =========
-        question: {question}
+        Вопрос: {question}
         ======
         """
 
     QA_PROMPT = PromptTemplate(template=qa_template, input_variables=["context","question" ])
 
     def conversational_chat(self, query):
-        """
-        Start a conversational chat with a model via Langchain
-        """
+
         n_gpu_layers = -1  # The number of layers to put on the GPU. The rest will be on the CPU. If you don't know how many layers there are, you can use -1 to move all to GPU.
         n_batch = 512
         llm = LlamaCpp(
@@ -60,7 +58,7 @@ class Chatbot:
 def count_tokens_chain(chain, query):
     with get_openai_callback() as cb:
         result = chain.run(query)
-        st.write(f'###### Tokens used in this conversation : {cb.total_tokens} tokens')
+        st.write(f'###### Токенов, используемых в беседе : {cb.total_tokens} tokens')
     return result 
 
     
