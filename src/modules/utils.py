@@ -20,7 +20,7 @@ class Utilities:
             def show_csv_file(uploaded_file):
                 file_container = st.expander("Your CSV file :")
                 uploaded_file.seek(0)
-                shows = pd.read_csv(uploaded_file)
+                shows = pd.read_csv(uploaded_file, sep=";")
                 file_container.write(shows)
 
             def show_pdf_file(uploaded_file):
@@ -43,8 +43,8 @@ class Utilities:
             file_extension = get_file_extension(uploaded_file.name)
 
             # Show the contents of the file based on its extension
-            #if file_extension == ".csv" :
-            #    show_csv_file(uploaded_file)
+            if file_extension == ".csv" :
+                show_csv_file(uploaded_file)
             if file_extension== ".pdf" : 
                 show_pdf_file(uploaded_file)
             elif file_extension== ".txt" : 
@@ -70,10 +70,9 @@ class Utilities:
             vectors = embeds.getDocEmbeds(file, uploaded_file.name)
 
             # Create a Chatbot instance with the specified model and temperature
-            chatbot = Chatbot(model, temperature,vectors)
+            chatbot = Chatbot(model, temperature, vectors)
         st.session_state["ready"] = True
 
         return chatbot
 
 
-    

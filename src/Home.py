@@ -30,8 +30,9 @@ st.markdown("---")
 #Robby's Pages
 st.subheader("🚀 Страницы робота")
 st.write("""
-- **Медицинский робот**: General Chat on data (PDF, TXT,CSV) with a [vectorstore](https://github.com/facebookresearch/faiss) (index useful parts(max 4) for respond to the user) | works with [ConversationalRetrievalChain](https://python.langchain.com/en/latest/modules/chains/index_examples/chat_vector_db.html)
-- **Медицинский робот** (beta): Chat on tabular data (CSV) | for precise information | process the whole file | works with [CSV_Agent](https://python.langchain.com/en/latest/modules/agents/toolkits/examples/csv.html) + [PandasAI](https://github.com/gventuri/pandas-ai) for data manipulation and graph creation""")
+- **Медицинский робот**: Отвечает на вопросы исходя из контекста медицинских данных
+- **Медицинский робот для БД**  Отвечает на основываясь на данных о пациентах из БД
+""")
 st.markdown("---")
 
 

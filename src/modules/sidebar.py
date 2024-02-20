@@ -10,12 +10,9 @@ class Sidebar:
 
     @staticmethod
     def about():
-        about = st.sidebar.expander("🧠 About Robby ")
+        about = st.sidebar.expander("🧠 О Роботе ")
         sections = [
-            "#### Robby is an AI chatbot with a conversational memory, designed to allow users to discuss their data in a more intuitive way. 📄",
-            "#### It uses large language models to provide users with natural language interactions about user data content. 🌐",
-            "#### Powered by [Langchain](https://github.com/hwchase17/langchain), [OpenAI](https://platform.openai.com/docs/models/gpt-3-5) and [Streamlit](https://github.com/streamlit/streamlit) ⚡",
-            "#### Source code: [yvann-hub/Robby-chatbot](https://github.com/yvann-hub/Robby-chatbot)",
+            "#### Мединский чат-бот, основанный на Mistral-AI",
         ]
         for section in sections:
             about.write(section)
@@ -41,12 +38,12 @@ class Sidebar:
         st.session_state["temperature"] = temperature
         
     def show_options(self):
-        with st.sidebar.expander("🛠️ Robby's Tools", expanded=False):
+        with st.sidebar.expander("🛠️ Инструменты бота", expanded=False):
 
             self.reset_chat_button()
             self.model_selector()
             self.temperature_slider()
             st.session_state.setdefault("model", self.MODEL_OPTIONS[0])
-            st.session_state.setdefault("temperature", self.TEMPERATURE_DEFAULT_VALUE)
+            st.session_state.setdefault("temperature", self.TEMPERATURE_DEFAULT_VALUE) # Всегда 0 пока что
 
     
