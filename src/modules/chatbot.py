@@ -2,7 +2,7 @@ import langchain
 import streamlit as st
 from langchain.callbacks import get_openai_callback
 from langchain.chains import ConversationalRetrievalChain
-from langchain.llms import LlamaCpp
+from langchain_community.llms import LlamaCpp
 from llama_cpp import Llama
 from langchain.prompts.prompt import PromptTemplate
 

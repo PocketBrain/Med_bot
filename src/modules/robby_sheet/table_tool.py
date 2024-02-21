@@ -7,7 +7,7 @@ from langchain.callbacks import get_openai_callback
 from streamlit_chat import message
 
 from pandasai import PandasAI
-from pandasai.llm.openai import OpenAI
+from langchain_community.llms import LlamaCpp
 
 class PandasAgent :
 
@@ -24,8 +24,19 @@ class PandasAgent :
         pass
 
     def get_agent_response(self, uploaded_file_content, query):
-        llm = OpenAI()
-        pandas_ai = PandasAI(llm, verbose=True)
+        n_gpu_layers = -1  # The number of layers to put on the GPU. The rest will be on the CPU. If you don't know how many layers there are, you can use -1 to move all to GPU.
+        n_batch = 512
+        llm = LlamaCpp(
+            model_path="model-q8_0.gguf",
+            n_gpu_layers=n_gpu_layers,
+            n_batch=n_batch,
+            n_threads=16,
+            temperature=0.5,
+            top_p=1,
+            verbose=True,
+            n_ctx=4096
+        )
+        pandas_ai = PandasAI(llm)
         old_stdout = sys.stdout
         sys.stdout = captured_output = StringIO()
         
