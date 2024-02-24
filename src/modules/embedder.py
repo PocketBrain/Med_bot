@@ -13,7 +13,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 class Embedder:
 
     def __init__(self):
-        self.PATH = "embeddings"
+        self.PATH = "embeddings/collection"
         self.createEmbeddingsDir()
 
     def createEmbeddingsDir(self):
@@ -54,7 +54,8 @@ class Embedder:
             loader = CSVLoader(file_path=change_data,encoding="utf-8")
             data = loader.load()
 
-        
+        #UlXVk88UdjWzhPAhq695NDpXRbuLeJSHqOI6tkZX1XOSRL48EpklAw
+
         elif file_extension == ".txt":
             loader = TextLoader(file_path=tmp_file_path, encoding="utf-8")
             data = loader.load_and_split(text_splitter)
@@ -63,22 +64,17 @@ class Embedder:
         #embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-l6-v2")
 
         vectors = Qdrant.from_documents(data, embeddings,
+                                        #path="embeddings",
                                         location=":memory:",  # Local mode with in-memory storage only
-                                        collection_name="dataset",
+                                        #collection_name="dataset",
                                         )
         os.remove(tmp_file_path)
-
+        return vectors
         # Save the vectors to a pickle file
-        with open(f"{self.PATH}/{original_filename}.pkl", "wb") as f:
-            pickle.dump(vectors, f)
+        #with open(f"{self.PATH}/{original_filename}.pkl", "wb") as f:
+            #pickle.dump(vectors, f)
 
     def getDocEmbeds(self, file, original_filename):
-
-        if not os.path.isfile(f"{self.PATH}/{original_filename}.pkl"):
-            self.storeDocEmbeds(file, original_filename)
-
-        # Load the vectors from the pickle file
-        with open(f"{self.PATH}/{original_filename}.pkl", "rb") as f:
-            vectors = pickle.load(f)
-        
+        #if not os.path.isfile(f"{self.PATH}/storage.sqlite"):
+        vectors = self.storeDocEmbeds(file, original_filename)
         return vectors
