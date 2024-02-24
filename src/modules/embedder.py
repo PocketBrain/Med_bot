@@ -1,5 +1,4 @@
 import os
-import pickle
 import tempfile
 import pandas as pd
 from langchain.document_loaders.csv_loader import CSVLoader
@@ -8,17 +7,25 @@ from langchain_community.embeddings import LlamaCppEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain.document_loaders import DataFrameLoader
+import qdrant_client
 
 class Embedder:
 
     def __init__(self):
         self.PATH = "embeddings"
         self.createEmbeddingsDir()
+        self.client = qdrant_client.QdrantClient(
+    url="https://5d720bb4-0726-4fec-82df-394311676830.us-east4-0.gcp.cloud.qdrant.io:6333",
+    api_key="49ujY_YYOAfkBenRnr1LfuZ-_qkcnDq90nw1x9VoI4OVLlVgpGDQ4Q",
+)
 
     def createEmbeddingsDir(self):
         if not os.path.exists(self.PATH):
             os.mkdir(self.PATH)
+
+    def is_folder_empty(folder_path):
+        return len(os.listdir(folder_path)) == 0
 
     def storeDocEmbeds(self, file, original_filename):
 
@@ -40,8 +47,8 @@ class Embedder:
         file_extension = get_file_extension(original_filename)
 
         if file_extension == ".csv":
-            loader = CSVLoader(file_path=tmp_file_path, encoding="utf-8",csv_args={
-                'delimiter': ';',})
+            df = pd.read_csv(tmp_file_path, sep=";")
+            loader = DataFrameLoader(df, page_content_column='question')
             data = loader.load()
 
         elif file_extension == ".pdf":
@@ -63,11 +70,17 @@ class Embedder:
         embeddings = LlamaCppEmbeddings(model_path="model-q8_0.gguf")
         #embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-l6-v2")
 
-        vectors = Qdrant.from_documents(data, embeddings,
-                                        #path="embeddings",
-                                        location=":memory:",  # Local mode with in-memory storage only
-                                        #collection_name="dataset",
-                                        )
+        vectors = Qdrant(
+            client=self.client, collection_name="dataset",
+            embeddings=embeddings,
+        )
+        print("hellow")
+        if vectors is None:
+            print("fuck")
+            vectors = Qdrant.from_documents(data, embeddings,
+                            url="https://5d720bb4-0726-4fec-82df-394311676830.us-east4-0.gcp.cloud.qdrant.io:6333",
+                            api_key="49ujY_YYOAfkBenRnr1LfuZ-_qkcnDq90nw1x9VoI4OVLlVgpGDQ4Q",
+                            collection_name="dataset")
         os.remove(tmp_file_path)
         return vectors
         # Save the vectors to a pickle file

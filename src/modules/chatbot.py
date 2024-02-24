@@ -5,6 +5,7 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain_community.llms import LlamaCpp
 from llama_cpp import Llama
 from langchain.prompts.prompt import PromptTemplate
+from langchain.chains import LLMChain
 
 langchain.verbose = False
 
@@ -36,20 +37,18 @@ class Chatbot:
             model_path="model-q8_0.gguf",
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
-            n_threads=16,
             temperature=0.5,
             top_p=1,
             verbose=True,
             n_ctx=4096
         )
 
-        retriever = self.vectors.as_retriever()
-
-
-        chain = ConversationalRetrievalChain.from_llm(llm=llm,
-            retriever=retriever, verbose=True, return_source_documents=True, max_tokens_limit=4097, combine_docs_chain_kwargs={'prompt': self.QA_PROMPT})
-
-        chain_input = {"question": query, "chat_history": st.session_state["history"]}
+        #retriever = self.vectors.as_retriever()
+        chain = LLMChain(llm=llm, prompt=self.QA_PROMPT)
+        relevants = self.vectors.similarity_search(query)
+        print(relevants)
+        docs = relevants[0].dict()['metadata']
+        chain_input = {"question": query, "context": docs['answer']}
         result = chain(chain_input)
 
         st.session_state["history"].append((query, result["answer"]))
