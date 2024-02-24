@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from langchain.callbacks import get_openai_callback
 from streamlit_chat import message
-
-from pandasai import PandasAI
+from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
+from langchain.agents.agent_types import AgentType
+#from pandasai import PandasAI
 from langchain_community.llms import LlamaCpp
 
-class PandasAgent :
+class PandasAgent:
 
     @staticmethod
     def count_tokens_agent(agent, query):
@@ -31,16 +32,23 @@ class PandasAgent :
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
             n_threads=16,
-            temperature=0.5,
+            temperature=0.1,
             top_p=1,
             verbose=True,
             n_ctx=4096
         )
-        pandas_ai = PandasAI(llm)
+        pandas_ai = create_pandas_dataframe_agent(
+            llm,
+            uploaded_file_content,
+            #pandas_kwargs={'sep': ';', 'header': None},
+            verbose=True,
+            #agent_type=AgentType.OPENAI_FUNCTIONS,
+                )
         old_stdout = sys.stdout
         sys.stdout = captured_output = StringIO()
         
-        response = pandas_ai.run(data_frame = uploaded_file_content, prompt=query)
+        response = pandas_ai.invoke(query)
+        print(response)
         fig = plt.gcf()
         if fig.get_axes():
                     # Adjust the figure size

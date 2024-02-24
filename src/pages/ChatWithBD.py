@@ -10,8 +10,6 @@ from modules.utils import Utilities
 from modules.sidebar import Sidebar
 
 def reload_module(module_name):
-    """For update changes
-    made to modules in localhost (press r)"""
 
     if module_name in sys.modules:
         importlib.reload(sys.modules[module_name])
@@ -42,7 +40,7 @@ if uploaded_file:
     if uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" or uploaded_file.type == "application/vnd.ms-excel":
         df = pd.read_excel(uploaded_file_content)
     else:
-        df = pd.read_csv(uploaded_file_content)
+        df = pd.read_csv(uploaded_file_content, sep=";")
 
     st.session_state.df = df
 
@@ -51,15 +49,16 @@ if uploaded_file:
     csv_agent = PandasAgent()
 
     with st.form(key="query"):
-        query = st.text_input("Ask [PandasAI](https://github.com/gventuri/pandas-ai) (look the pandas-AI read-me for how use it)", value="", type="default",
+        query = st.text_input("Чат с CSV БД", value="", type="default",
         placeholder="e-g : How many rows ? "
         )
-    submitted_query = st.form_submit_button("Submit")
-    reset_chat_button = st.form_submit_button("Reset Chat")
+        submitted_query = st.form_submit_button("Submit")
+        reset_chat_button = st.form_submit_button("Reset Chat")
+        print(query)
     if reset_chat_button:
             st.session_state["chat_history"] = []
     if submitted_query:
-        result, captured_output = csv_agent.get_agent_response(df, query)
+        result, captured_output = csv_agent.get_agent_response(df, query)# df вместо uploaded_file
         cleaned_thoughts = csv_agent.process_agent_thoughts(captured_output)
         csv_agent.display_agent_thoughts(cleaned_thoughts)
         csv_agent.update_chat_history(query, result)
