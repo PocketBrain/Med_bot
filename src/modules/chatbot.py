@@ -30,7 +30,7 @@ class Chatbot:
     QA_PROMPT = PromptTemplate(template=qa_template, input_variables=["context","question" ])
 
     def conversational_chat(self, query):
-
+        print("Init")
         n_gpu_layers = -1  # The number of layers to put on the GPU. The rest will be on the CPU. If you don't know how many layers there are, you can use -1 to move all to GPU.
         n_batch = 512
         llm = LlamaCpp(
@@ -42,11 +42,11 @@ class Chatbot:
             verbose=True,
             n_ctx=4096
         )
-
+        print("how are you")
         #retriever = self.vectors.as_retriever()
         chain = LLMChain(llm=llm, prompt=self.QA_PROMPT)
         relevants = self.vectors.similarity_search(query)
-        print(relevants)
+        print(f"help me pls {relevants}")
         docs = relevants[0].dict()['metadata']
         chain_input = {"question": query, "context": docs['answer']}
         result = chain(chain_input)

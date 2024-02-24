@@ -20,7 +20,7 @@ class Layout:
                 key="input",
                 label_visibility="collapsed",
             )
-            submit_button = st.form_submit_button(label="Send")
+            submit_button = st.form_submit_button(label="Отправить")
             
             is_ready = submit_button and user_input
         return is_ready, user_input

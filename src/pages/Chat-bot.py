@@ -50,11 +50,11 @@ if uploaded_file:
         # Initialize chat history
     history = ChatHistory()
     try:
-
-        chatbot = utils.setup_chatbot(
-            uploaded_file, st.session_state["model"], st.session_state["temperature"]
-        )
-        st.session_state["chatbot"] = chatbot
+        if "chatbot" not in st.session_state:
+            chatbot = utils.setup_chatbot(
+                uploaded_file, st.session_state["model"], st.session_state["temperature"]
+            )
+            st.session_state["chatbot"] = chatbot
 
         if st.session_state["ready"]:
                 # Create containers for chat responses and user prompts
