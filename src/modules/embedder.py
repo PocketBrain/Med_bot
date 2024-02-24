@@ -13,7 +13,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 class Embedder:
 
     def __init__(self):
-        self.PATH = "embeddings/collection"
+        self.PATH = "embeddings"
         self.createEmbeddingsDir()
 
     def createEmbeddingsDir(self):
