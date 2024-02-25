@@ -54,7 +54,7 @@ if uploaded_file:
         )
         submitted_query = st.form_submit_button("Submit")
         reset_chat_button = st.form_submit_button("Reset Chat")
-        print(query)
+
     if reset_chat_button:
             st.session_state["chat_history"] = []
     if submitted_query:

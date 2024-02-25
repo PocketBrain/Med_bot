@@ -27,6 +27,7 @@ class PandasAgent:
     def get_agent_response(self, uploaded_file_content, query):
         n_gpu_layers = -1  # The number of layers to put on the GPU. The rest will be on the CPU. If you don't know how many layers there are, you can use -1 to move all to GPU.
         n_batch = 512
+        print("gih")
         llm = LlamaCpp(
             model_path="model-q8_0.gguf",
             n_gpu_layers=n_gpu_layers,
